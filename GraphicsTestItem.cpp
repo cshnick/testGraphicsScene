@@ -16,6 +16,7 @@ const int opWidth = 5;
 
 GraphicsTestItem::GraphicsTestItem()
     : mShadowItem(0)
+    , mBoundingRegion(0)
 {
     qsrand(QTime::currentTime().msec());
 
@@ -46,11 +47,22 @@ GraphicsTestItem::GraphicsTestItem()
     mShadowItem->setPen(pen);
     mShadowItem->setBrush(brushColor);
 
+    mBoundingRegion = new QGraphicsPathItem;
+    mBoundingRegion->setFlag(ItemIsSelectable, false);
+    mBoundingRegion->setFlag(ItemIsMovable, false);
+    penColor.setAlpha(0x88);
+    pen.setColor(penColor);
+    mBoundingRegion->setPen(pen);
+    brushColor.setAlpha(0x22);
+    mBoundingRegion->setBrush(brushColor);
 }
 
 GraphicsTestItem::~GraphicsTestItem()
 {
-    delete mShadowItem;
+    if (!scene()) {
+        delete mShadowItem;
+        delete mBoundingRegion;
+    }
 }
 
 void GraphicsTestItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -89,27 +101,32 @@ QVariant GraphicsTestItem::itemChange(GraphicsItemChange change, const QVariant 
     switch (static_cast<int>(change)) {
     case ItemTransformHasChanged : {
         emit transformChanged(value.value<QTransform>());
+        updateBoundingRegion();
     } break;
     case ItemPositionHasChanged : {
         mShadowItem->setPos(value.toPointF());
-
+        updateBoundingRegion();
         emit positionChanged(value.toPointF());
-
     } break;
     case ItemTransformOriginPointHasChanged : {
         emit transformOriginPointChanged(value.toPointF());
+        updateBoundingRegion();
     } break;
     case ItemRotationHasChanged : {
         emit rotationChanged(value.toInt());
+        updateBoundingRegion();
     } break;
     case ItemVisibleHasChanged : {
         mShadowItem->setPath(path());
         mShadowItem->setVisible(value.toBool());
+        updateBoundingRegion();
+        mBoundingRegion->setVisible(value.toBool());
     } break;
     case ItemSceneHasChanged : {
         if (scene()) {
             scene()->addItem(mShadowItem);
             mShadowItem->stackBefore(this);
+            scene()->addItem(mBoundingRegion);
         } else {
             mShadowItem->setParentItem(0);
         }
@@ -120,4 +137,11 @@ QVariant GraphicsTestItem::itemChange(GraphicsItemChange change, const QVariant 
     }
 
     return QGraphicsPathItem::itemChange(change, value);
+}
+
+void GraphicsTestItem::updateBoundingRegion()
+{
+    QPainterPath regionPath;
+    regionPath.addRect(boundingRegion(sceneTransform()).boundingRect());
+    mBoundingRegion->setPath(regionPath);
 }

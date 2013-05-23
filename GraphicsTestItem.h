@@ -21,9 +21,13 @@ signals:
     void positionChanged(const QPointF &pNewPositon);
     void transformOriginPointChanged(const QPointF &newPoint);
     void rotationChanged(int newAngle);
+
+private:
+    void updateBoundingRegion();
     
 private:
     QGraphicsPathItem *mShadowItem;
+    QGraphicsPathItem *mBoundingRegion;
 
     
 };

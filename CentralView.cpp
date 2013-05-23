@@ -112,6 +112,8 @@ void CentralView::applyNewAngle(int newAngle)
     case 1 : {
         QGraphicsItem *curItem = selectedItems.first();
         curItem->setRotation(newAngle);
+//        qDebug() << "items bounding rect" << curItem->boundingRect();
+//        qDebug() << "Item's bounding region" << curItem->boundingRegion(curItem->sceneTransform());
        } break;
     default :
         break;
