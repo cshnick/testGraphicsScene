@@ -24,6 +24,7 @@ signals:
     void requestSetNewPosition(const QPointF &newPos);
     void requestSetNewTransformOriginPoint(const QPointF &newPos);
     void requestSetNewRotationAngle(int newAngle);
+    void requestCenterCoords();
     
 private slots:
     void writeTransform(const QTransform &pTransform);
@@ -56,6 +57,7 @@ private slots:
         void requestSetNewTransform();
         void requestSetNewPosition();
         void requestSetNewTransformOriginPoint();
+        void requestCenterCoords();
 };
 
 #endif // CONTROLDOCK_H

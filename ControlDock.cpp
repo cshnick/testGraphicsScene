@@ -32,6 +32,7 @@ ControlDock::ControlDock(QWidget *parent) :
     connect(mWidget->ui->setNewTopButton, SIGNAL(clicked()), mWidget, SLOT(requestSetNewTransformOriginPoint()));
     connect(mWidget->ui->top_x, SIGNAL(editingFinished()), mWidget, SLOT(requestSetNewTransformOriginPoint()));
     connect(mWidget->ui->top_y, SIGNAL(editingFinished()), mWidget, SLOT(requestSetNewTransformOriginPoint()));
+    connect(mWidget->ui->topCenterButton, SIGNAL(clicked()), mWidget, SLOT(requestCenterCoords()));
 
 
 }
@@ -131,4 +132,9 @@ void ControlDockWidget::requestSetNewTransformOriginPoint()
 {
     QPointF newPoint(ui->top_x->value(), ui->top_y->value());
     emit q->requestSetNewTransformOriginPoint(newPoint);
+}
+
+void ControlDockWidget::requestCenterCoords()
+{
+    emit q->requestCenterCoords();
 }

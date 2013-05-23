@@ -11,6 +11,7 @@ CentralView::CentralView(QWidget *parent) :
 
     connect(mScene, SIGNAL(selectionChanged(QList<GraphicsTestItem*>)), this, SLOT(slot_sceneSelectionChanged(QList<GraphicsTestItem*>)));
 
+    setDragMode(RubberBandDrag);
 }
 
 QSize CentralView::sizeHint() const
@@ -111,6 +112,23 @@ void CentralView::applyNewAngle(int newAngle)
     case 1 : {
         QGraphicsItem *curItem = selectedItems.first();
         curItem->setRotation(newAngle);
+       } break;
+    default :
+        break;
+    }
+}
+
+void CentralView::reactOnCenterCoordsRequest()
+{
+    QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
+    switch (selectedItems.count()) {
+    case 0 :
+        break;
+    case 1 : {
+        GraphicsTestItem *curItem = static_cast<GraphicsTestItem*>(selectedItems.first());
+        QRectF ownRect = curItem->path().boundingRect();
+        QPointF center = ownRect.center();
+        emit signal_sendCenterCoords(center);
        } break;
     default :
         break;

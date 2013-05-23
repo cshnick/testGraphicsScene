@@ -186,7 +186,7 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="4">
+        <item row="1" column="5">
          <widget class="QToolButton" name="setNewTopButton">
           <property name="text">
            <string>Set</string>
@@ -213,6 +213,16 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>y:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
@@ -223,13 +233,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="label_16">
+        <item row="1" column="4">
+         <widget class="QToolButton" name="topCenterButton">
           <property name="text">
-           <string>y:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>Center</string>
           </property>
          </widget>
         </item>

@@ -22,12 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mCentralWidget, SIGNAL(signal_ItemTransformOriginPointChanged(QPointF)), mControlDock, SLOT(writeTransformOriginPoint(QPointF)));
     connect(mCentralWidget, SIGNAL(signal_ItemPositionChanged(QPointF)), mControlDock, SLOT(writePosition(QPointF)));
     connect(mCentralWidget, SIGNAL(signal_ItemRotationChanged(int)), mControlDock, SLOT(writeRotation(int)));
+    connect(mCentralWidget, SIGNAL(signal_sendCenterCoords(QPointF)), mControlDock, SLOT(writeTransformOriginPoint(QPointF)));
 
     connect(mControlDock, SIGNAL(requestAddItem()), mCentralWidget, SLOT(addItem()));
     connect(mControlDock, SIGNAL(requestSetNewTransform(QTransform)), mCentralWidget, SLOT(applyTransform(QTransform)));
     connect(mControlDock, SIGNAL(requestSetNewPosition(QPointF)), mCentralWidget, SLOT(applyPosition(QPointF)));
     connect(mControlDock, SIGNAL(requestSetNewTransformOriginPoint(QPointF)), mCentralWidget, SLOT(applyTransformOriginPoint(QPointF)));
     connect(mControlDock, SIGNAL(requestSetNewRotationAngle(int)), mCentralWidget, SLOT(applyNewAngle(int)));
+    connect(mControlDock, SIGNAL(requestCenterCoords()), mCentralWidget, SLOT(reactOnCenterCoordsRequest()));
 }
 
 MainWindow::~MainWindow()

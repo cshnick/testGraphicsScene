@@ -10,8 +10,10 @@ class GraphicsTestItem : public QObject,  public QGraphicsPathItem
 
 public:
     explicit GraphicsTestItem();
+    ~GraphicsTestItem();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
+    QRectF boundingRect() const;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 signals:
@@ -20,7 +22,9 @@ signals:
     void transformOriginPointChanged(const QPointF &newPoint);
     void rotationChanged(int newAngle);
     
-public slots:
+private:
+    QGraphicsPathItem *mShadowItem;
+
     
 };
 

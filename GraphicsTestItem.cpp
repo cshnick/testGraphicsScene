@@ -3,22 +3,54 @@
 #include <QtGui>
 #include "CentralView.h"
 
+const QColor generateColor(int alpha = 255)
+{
+    int r = qrand() % 0xFF;
+    int g = qrand() % 0xFF;
+    int b = qrand() % 0xFF;
+
+    return QColor(r, g, b, alpha);
+}
+
 const int opWidth = 5;
 
 GraphicsTestItem::GraphicsTestItem()
+    : mShadowItem(0)
 {
+    qsrand(QTime::currentTime().msec());
+
     setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsMovable
              | QGraphicsItem::ItemSendsGeometryChanges
              | QGraphicsItem::ItemSendsScenePositionChanges);
 
+    QColor brushColor = generateColor();
+    QColor penColor = generateColor();
 
-
-    setBrush(Qt::blue);
+    setBrush(brushColor);
     QPen pen;
     pen.setWidthF(2.0);
-    pen.setColor(Qt::yellow);
+    pen.setColor(penColor);
     setPen(pen);
+
+
+    int alpha = 0x88;
+    brushColor.setAlpha(alpha);
+    penColor.setAlpha(alpha);
+    pen.setColor(penColor);
+
+    mShadowItem = new QGraphicsPathItem();
+    mShadowItem->setPath(path());
+    mShadowItem->setFlag(ItemIsSelectable, false);
+    mShadowItem->setFlag(ItemIsMovable, false);
+    mShadowItem->setPen(pen);
+    mShadowItem->setBrush(brushColor);
+
+}
+
+GraphicsTestItem::~GraphicsTestItem()
+{
+    delete mShadowItem;
 }
 
 void GraphicsTestItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -43,6 +75,15 @@ QPainterPath GraphicsTestItem::shape() const
     return result;
 }
 
+QRectF GraphicsTestItem::boundingRect() const
+{
+    QPainterPath result;
+    result.addPath(path());
+    result.addEllipse(transformOriginPoint(), opWidth, opWidth);
+
+    return result.boundingRect();
+}
+
 QVariant GraphicsTestItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     switch (static_cast<int>(change)) {
@@ -50,7 +91,10 @@ QVariant GraphicsTestItem::itemChange(GraphicsItemChange change, const QVariant 
         emit transformChanged(value.value<QTransform>());
     } break;
     case ItemPositionHasChanged : {
+        mShadowItem->setPos(value.toPointF());
+
         emit positionChanged(value.toPointF());
+
     } break;
     case ItemTransformOriginPointHasChanged : {
         emit transformOriginPointChanged(value.toPointF());
@@ -58,7 +102,21 @@ QVariant GraphicsTestItem::itemChange(GraphicsItemChange change, const QVariant 
     case ItemRotationHasChanged : {
         emit rotationChanged(value.toInt());
     } break;
-
+    case ItemVisibleHasChanged : {
+        mShadowItem->setPath(path());
+        mShadowItem->setVisible(value.toBool());
+    } break;
+    case ItemSceneHasChanged : {
+        if (scene()) {
+            scene()->addItem(mShadowItem);
+            mShadowItem->stackBefore(this);
+        } else {
+            mShadowItem->setParentItem(0);
+        }
+    } break;
+    case ItemZValueHasChanged : {
+        mShadowItem->stackBefore(this);
+    } break;
     }
 
     return QGraphicsPathItem::itemChange(change, value);

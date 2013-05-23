@@ -20,6 +20,7 @@ signals:
     void signal_ItemPositionChanged(const QPointF &pPoint);
     void signal_ItemTransformOriginPointChanged(const QPointF &pPoint);
     void signal_ItemRotationChanged(int newAngle);
+    void signal_sendCenterCoords(const QPointF& pPoint);
 
 private slots:
     void addItem();
@@ -28,6 +29,7 @@ private slots:
     void applyPosition(const QPointF &newPoint);
     void applyTransformOriginPoint(const QPointF &newPoint);
     void applyNewAngle(int newAngle);
+    void reactOnCenterCoordsRequest();
         
 private:
     MainScene *mScene;
