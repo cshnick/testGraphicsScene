@@ -1,21 +1,21 @@
-#ifndef CONTROLDOCK_H
-#define CONTROLDOCK_H
+#ifndef PropertiesDock_H
+#define PropertiesDock_H
 
 #include <QDockWidget>
 
 #include <QtGui>
 
-class ControlDockWidget;
+class PropertiesDockWidget;
 namespace Ui {
 class DockWidget;
 }
 
 
-class ControlDock : public QDockWidget
+class PropertiesDock : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit ControlDock(QWidget *parent = 0);
+    explicit PropertiesDock(QWidget *parent = 0);
     
 signals:
     void requestAddItem();
@@ -33,25 +33,25 @@ private slots:
     void writeTransformOriginPoint(const QPointF &pPoint);
 
 private:
-    ControlDockWidget *mWidget;
+    PropertiesDockWidget *mWidget;
 
-    friend class ControlDockWidget;
+    friend class PropertiesDockWidget;
 };
 
-class ControlDockWidget : public QWidget
+class PropertiesDockWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ControlDockWidget(QWidget *parent = 0);
-    ~ControlDockWidget();
+    explicit PropertiesDockWidget(QWidget *parent = 0);
+    ~PropertiesDockWidget();
 
 private:
     void writeTransform(const QTransform &pTransform);
 
     Ui::DockWidget *ui;
-    ControlDock *q;
+    PropertiesDock *q;
 
-    friend class ControlDock;
+    friend class PropertiesDock;
 
 private slots:
         void requestSetNewTransform();
@@ -60,4 +60,4 @@ private slots:
         void requestCenterCoords();
 };
 
-#endif // CONTROLDOCK_H
+#endif // PropertiesDock_H

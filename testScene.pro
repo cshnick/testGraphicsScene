@@ -15,13 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     CentralView.cpp \
-    ControlDock.cpp \
-    GraphicsTestItem.cpp
+    GraphicsTestItem.cpp \
+    PropertiesDock.cpp \
+    TestDock.cpp
 
 HEADERS  += mainwindow.h \
     CentralView.h \
-    ControlDock.h \
-    GraphicsTestItem.h
+    GraphicsTestItem.h \
+    PropertiesDock.h \
+    TestDock.h
 
 FORMS    += mainwindow.ui \
-    dockWidget.ui
+    PropertiesDockWidget.ui \
+    TestDock.ui

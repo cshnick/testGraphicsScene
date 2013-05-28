@@ -1,13 +1,13 @@
-#include "ControlDock.h"
-#include "ui_dockWidget.h"
+#include "PropertiesDock.h"
+#include "ui_PropertiesDockWidget.h"
 
 #include <QtGui>
 
-ControlDock::ControlDock(QWidget *parent) :
+PropertiesDock::PropertiesDock(QWidget *parent) :
     QDockWidget(parent)
 
 {
-    mWidget = new ControlDockWidget(this);
+    mWidget = new PropertiesDockWidget(this);
     setWidget(mWidget);
 
     connect(mWidget->ui->dial, SIGNAL(valueChanged(int)), this, SIGNAL(angleChanged(int)));
@@ -33,36 +33,34 @@ ControlDock::ControlDock(QWidget *parent) :
     connect(mWidget->ui->top_x, SIGNAL(editingFinished()), mWidget, SLOT(requestSetNewTransformOriginPoint()));
     connect(mWidget->ui->top_y, SIGNAL(editingFinished()), mWidget, SLOT(requestSetNewTransformOriginPoint()));
     connect(mWidget->ui->topCenterButton, SIGNAL(clicked()), mWidget, SLOT(requestCenterCoords()));
-
-
 }
 
-void ControlDock::writeTransform(const QTransform &pTransform)
+void PropertiesDock::writeTransform(const QTransform &pTransform)
 {
     mWidget->writeTransform(pTransform);
 }
 
-void ControlDock::writePosition(const QPointF &pPoint)
+void PropertiesDock::writePosition(const QPointF &pPoint)
 {
     mWidget->ui->pos_x->setValue(pPoint.x());
     mWidget->ui->pos_y->setValue(pPoint.y());
 }
 
-void ControlDock::writeRotation(int pNewAngle)
+void PropertiesDock::writeRotation(int pNewAngle)
 {
     mWidget->ui->dial->setValue(pNewAngle);
 }
 
-void ControlDock::writeTransformOriginPoint(const QPointF &pPoint)
+void PropertiesDock::writeTransformOriginPoint(const QPointF &pPoint)
 {
     mWidget->ui->top_x->setValue(pPoint.x());
     mWidget->ui->top_y->setValue(pPoint.y());
 }
 
-ControlDockWidget::ControlDockWidget(QWidget *parent)
+PropertiesDockWidget::PropertiesDockWidget(QWidget *parent)
     : QWidget(parent)
     ,ui(new Ui::DockWidget)
-    , q(static_cast<ControlDock*>(parent))
+    , q(static_cast<PropertiesDock*>(parent))
 {
     ui->setupUi(this);
 
@@ -76,12 +74,12 @@ ControlDockWidget::ControlDockWidget(QWidget *parent)
     ui->dial->setValue(0);
 }
 
-ControlDockWidget::~ControlDockWidget()
+PropertiesDockWidget::~PropertiesDockWidget()
 {
     delete ui;
 }
 
-void ControlDockWidget::writeTransform(const QTransform &pTransform)
+void PropertiesDockWidget::writeTransform(const QTransform &pTransform)
 {
     qreal m11 = pTransform.m11();
     qreal m22 = pTransform.m22();
@@ -105,7 +103,7 @@ void ControlDockWidget::writeTransform(const QTransform &pTransform)
 }
 
 
-void ControlDockWidget::requestSetNewTransform()
+void PropertiesDockWidget::requestSetNewTransform()
 {
     QTransform transform (
                 ui->m11->value()
@@ -122,19 +120,19 @@ void ControlDockWidget::requestSetNewTransform()
     emit q->requestSetNewTransform(transform);
 }
 
-void ControlDockWidget::requestSetNewPosition()
+void PropertiesDockWidget::requestSetNewPosition()
 {
     QPointF newPoint(ui->pos_x->value(), ui->pos_y->value());
     emit q->requestSetNewPosition(newPoint);
 }
 
-void ControlDockWidget::requestSetNewTransformOriginPoint()
+void PropertiesDockWidget::requestSetNewTransformOriginPoint()
 {
     QPointF newPoint(ui->top_x->value(), ui->top_y->value());
     emit q->requestSetNewTransformOriginPoint(newPoint);
 }
 
-void ControlDockWidget::requestCenterCoords()
+void PropertiesDockWidget::requestCenterCoords()
 {
     emit q->requestCenterCoords();
 }

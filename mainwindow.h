@@ -8,7 +8,8 @@ class MainWindow;
 }
 
 class CentralView;
-class ControlDock;
+class PropertiesDock;
+class TestDock;
 
 class MainWindow : public QMainWindow
 {
@@ -22,7 +23,8 @@ private:
     Ui::MainWindow *ui;
 
      CentralView *mCentralWidget;
-     ControlDock *mControlDock;
+     PropertiesDock *mPropertiesDock;
+     TestDock *mTestDock;
 };
 
 #endif // MAINWINDOW_H
