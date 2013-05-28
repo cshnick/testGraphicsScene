@@ -11,6 +11,8 @@ TestDock::TestDock(QWidget *parent) :
     mWidget = new TestDockWidget(this);
     setWidget(mWidget);
 
+    connect(mWidget->ui->startTestButton, SIGNAL(clicked()), this, SLOT(generateRequest()));
+
 //    connect(mWidget->ui->dial, SIGNAL(valueChanged(int)), this, SIGNAL(angleChanged(int)));
 //    connect(mWidget->ui->toolButton, SIGNAL(clicked()), this, SIGNAL(requestAddItem()));
 //    connect(mWidget->ui->dial, SIGNAL(valueChanged(int)), this, SIGNAL(requestSetNewRotationAngle(int)));
@@ -36,12 +38,25 @@ TestDock::TestDock(QWidget *parent) :
 //    connect(mWidget->ui->topCenterButton, SIGNAL(clicked()), mWidget, SLOT(requestCenterCoords()));
 }
 
+void TestDock::generateRequest()
+{
+    requestContent req;
+    req.itemType = mWidget->ui->itemTypeCombobox->currentText();
+    req.numItems = mWidget->ui->numberIemsButton->value();
+
+    emit sendTestRequest(req);
+}
+
 TestDockWidget::TestDockWidget(QWidget *parent)
     : QWidget(parent)
     ,ui(new Ui::TestDockWidget)
     , q(static_cast<TestDock*>(parent))
 {
     ui->setupUi(this);
+
+    ui->numberIemsButton->setValue(NUMITEMS);
+    ui->itemTypeCombobox->addItem(PATH_ITEM);
+    ui->itemTypeCombobox->addItem(PIX_ITEM);
 
 }
 

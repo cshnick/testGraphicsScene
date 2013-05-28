@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mPropertiesDock, SIGNAL(requestSetNewTransformOriginPoint(QPointF)), mCentralWidget, SLOT(applyTransformOriginPoint(QPointF)));
     connect(mPropertiesDock, SIGNAL(requestSetNewRotationAngle(int)), mCentralWidget, SLOT(applyNewAngle(int)));
     connect(mPropertiesDock, SIGNAL(requestCenterCoords()), mCentralWidget, SLOT(reactOnCenterCoordsRequest()));
+
+    connect(mTestDock, SIGNAL(sendTestRequest(requestContent)), mCentralWidget, SLOT(startTest(requestContent)));
 }
 
 MainWindow::~MainWindow()

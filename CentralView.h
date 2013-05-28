@@ -21,6 +21,7 @@ default :                                                      \
 class MainScene;
 class GraphicsTestItem;
 class GraphView;
+class requestContent;
 
 class CentralView : public QWidget
 {
@@ -46,6 +47,7 @@ private slots:
     void applyNewAngle(int newAngle);
     void reactOnCenterCoordsRequest();
     void changeRubberBandDragMode();
+    void startTest(const requestContent &req);
 
 private:
     void setupUi();

@@ -5,15 +5,6 @@
 #include <QtGui>
 #include <CentralView.h>
 
-//const QColor genColor(int alpha = 255)
-//{
-//    int r = qrand() % 0xFF;
-//    int g = qrand() % 0xFF;
-//    int b = qrand() % 0xFF;
-
-//    return QColor(r, g, b, alpha);
-//}
-
 #define OPWIDTH 5
 
 template <typename GraphicsBase>
@@ -214,6 +205,14 @@ class GraphicsPathTstItem : public TstGraphicsItem<QGraphicsPathItem>
 {
 public:
     GraphicsPathTstItem();
+
+    QPainterPath shape() const;
+    QRectF boundingRect() const;
+};
+
+class GraphicsPixmapTstItem : public TstGraphicsItem<QGraphicsPixmapItem>
+{
+    GraphicsPixmapTstItem();
 
     QPainterPath shape() const;
     QRectF boundingRect() const;

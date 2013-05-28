@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="comboBox"/>
+    <widget class="QComboBox" name="itemTypeCombobox"/>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
@@ -32,7 +32,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QSpinBox" name="spinBox">
+    <widget class="QSpinBox" name="numberIemsButton">
      <property name="wrapping">
       <bool>false</bool>
      </property>
@@ -51,7 +51,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="startTestButton">
      <property name="text">
       <string>Start</string>
      </property>

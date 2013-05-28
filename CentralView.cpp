@@ -3,6 +3,8 @@
 #include <QtGui>
 #include <GraphicsTestItem.h>
 
+#include  "TestDock.h"
+
 const int gridLength = 1500;
 const int gridShot = 100;
 const int indentSize = 5;
@@ -52,11 +54,13 @@ QRectF CentralView::visibleSceneRect() const
 void CentralView::addItem()
 {
     qDebug() << "add item";
+    qsrand(QTime::currentTime().msec());
+
     GraphicsPathTstItem *nextItem = new GraphicsPathTstItem;
     QPainterPath path;
     path.addRect(0, 0, 150, 100);
     nextItem->setPath(path);
-    qsrand(QTime::currentTime().msec());
+
 
 //    connect(nextItem, SIGNAL(positionChanged(QPointF)), this, SIGNAL(signal_ItemPositionChanged(QPointF)));
 //    connect(nextItem, SIGNAL(transformChanged(QTransform)), this, SIGNAL(signal_ItemTransformChanged(QTransform)));
@@ -195,6 +199,49 @@ void CentralView::changeRubberBandDragMode()
         mView->setDragMode(QGraphicsView::RubberBandDrag);
     } else if (sender() == mHandDragModeButton) {
         mView->setDragMode(QGraphicsView::ScrollHandDrag);
+    }
+}
+
+void CentralView::startTest(const requestContent &req)
+{
+    if (!req.numItems || req.itemType.isNull()) {
+        return;
+    }
+
+    QRectF visibRect = visibleSceneRect();
+    int itemsCount = req.numItems;
+
+    qsrand(QTime::currentTime().msec());
+
+    int xRange = visibRect.width();
+    int yRange = visibRect.height();
+
+    int xOffset = visibRect.x();
+    int yOffset = visibRect.y();
+
+    for (int i = 0; i < itemsCount; i++) {
+        QPointF placePoint = QPointF(xOffset + static_cast<qreal>(rand() % xRange)
+                                     ,yOffset + static_cast<qreal>(rand() % yRange));
+
+        if (req.itemType == PIX_ITEM) {
+            QPixmap pixmap("/home/ilia/Documents/sample.png");
+            if (!pixmap.isNull()) {
+                QGraphicsPixmapItem *pix = mScene->addPixmap(pixmap);
+                pix->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+                pix->setPos(placePoint);
+                pix->setVisible(true);
+            }
+        } else if (req.itemType == PATH_ITEM) {
+            GraphicsPathTstItem *nextItem = new GraphicsPathTstItem;
+            QPainterPath path;
+            path.addRect(0, 0, 25, 15);
+            nextItem->setPath(path);
+
+            mScene->addItem(nextItem);
+            nextItem->setVisible(true);
+            nextItem->setPos(placePoint);
+        }
+        qDebug() << "Processing item no" << i;
     }
 }
 
